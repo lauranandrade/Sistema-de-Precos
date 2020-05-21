@@ -1,41 +1,3 @@
-int main(int argc, char const *argv[])
-{
-	printf("Digite \"D\" para Dados e \"P\" para Pesquisa: ");
-	//le do cliente
-	if (== "D" || == 'd'){
-		printf("\nDigite o tipo do combustível (0 - Díesel, 1 - Álcool e 2 - Gasolina): ");
-		//le do cliente
-		printf("\nDigite o preço sem vírgulas (Ex: r$ 3,299 vira 3299): ");
-		//le do cliente
-		printf("\nDigite as coordenadas do posto de gasolina (latitude longitude): ");
-		//le do cliente
-		//junta tudo em uma mensagem só
-		//confirmar recepção da mensagem
-		printf("\nMensagem recebida: ");
-		//imprime a mensagem
-		//add a informação em um arquivo
-
-	} else if (== "P" || == 'p'){
-		printf("\nDigite o tipo do combustível (0 - Díesel, 1 - Álcool e 2 - Gasolina): ");
-		//le do cliente
-		printf("\nDigite o raio de busca: ");
-		//le do cliente
-		printf("\nDigite as coordenadas do centro de busca (latitude longitude): ");
-		//le do cliente
-		//junta tudo em uma mensagem só
-		//confirmar recepção da mensagem
-		printf("\nMensagem recebida: ");
-		//buscar o menor preço no arquivo
-		printf("\nO menor preço para este combustível para postos de combustível que estejam no centro de busca mais raio de busca é: ");
-	} else {
-		//ERRO
-	}
-	return 0;
-}
-
-
-
-
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <unistd.h> 
@@ -86,6 +48,7 @@ void init_socket()
 
 int main(int argc, char *argv[]) 
 { 
+
 	double preco;
 	char buffer[1024] = {0}; 
 	char resposta[256];
@@ -166,4 +129,4 @@ int main(int argc, char *argv[])
 
 	}
 	return 0; 
-} 
+}

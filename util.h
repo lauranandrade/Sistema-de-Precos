@@ -2,6 +2,18 @@
 #include <stdio.h>
 #include <math.h>
 
+int letra2num(char letra)
+{
+	int num = 0;
+	if (letra < 58)
+		num = letra-48;
+	else if (letra < 91)
+		num = letra-65;
+	else
+		num = letra-97;
+	return num;
+}
+
 int str2int(char *str, int t)
 {
 	int res = 0;
@@ -105,7 +117,6 @@ int pesquisar_dados(char *mensagem, char *arquivo)
 		}
 		++i;
 	}
-
 
 	while(fgets(linha,256,arq)) {
 		//verifica se as informações dessa

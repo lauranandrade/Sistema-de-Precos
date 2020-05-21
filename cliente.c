@@ -7,7 +7,7 @@
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
 
-#include "util.h"
+#include "utils.h"
 
 #define MAXLINE 1024 
 
@@ -35,7 +35,6 @@ void init_socket()
 	servaddr.sin_port = htons(PORT); 
 	servaddr.sin_addr.s_addr = INADDR_ANY; 
 }
-
 
 int main(int argc, char *argv[]) 
 { 
