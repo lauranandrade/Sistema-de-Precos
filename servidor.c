@@ -21,8 +21,9 @@ void init_socket()
 {
 	// Criando o socket
 	puts("Criando Socket");
+	puts("");
 	if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
-		perror("socket creation failed"); 
+		perror("Socket creation failed"); 
 		exit(EXIT_FAILURE); 
 	} 
 	
@@ -35,33 +36,32 @@ void init_socket()
 	servaddr.sin_port = htons(PORT); 
 	
 	// Coloca o socket no endereco
-	puts("Vinculando socket no endereco");
-	if ( bind(sockfd, (const struct sockaddr *)&servaddr, 
-			sizeof(servaddr)) < 0 ) 
+	puts("Vinculando socket no endereço");
+	puts("");
+	if ( bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0 ) 
 	{ 
-		perror("bind failed"); 
+		perror("Bind failed"); 
 		exit(EXIT_FAILURE); 
 	} 
 	len = sizeof(cliaddr); 
 	puts("Conectado, aguardando");
+	puts("");
 }
 
 int main(int argc, char *argv[]) 
 { 
-
 	double preco;
 	char buffer[1024] = {0}; 
 	char resposta[256];
 	char *mensagem = "Recebido"; 
-	char *arquivo = "precos.txt";
+	char *arquivo = "dados.txt";
 	char log[256];
 	int c;
-
 
 	while((c = getopt(argc,argv,"p:")) != -1) {
 		switch(c) {
 			case 'p':
-				PORT = str2int(optarg,strlen(optarg));
+				PORT = str2num(optarg,strlen(optarg));
 				break;
 			case '?':
 				if(optopt == 'p') {
@@ -76,25 +76,20 @@ int main(int argc, char *argv[])
 
 	init_socket();
 
-	//recebe a mensagem so cliente
-	n = recvfrom(sockfd, (char *)buffer, MAXLINE, 
-				MSG_WAITALL, ( struct sockaddr *) &cliaddr, 
-				&len); 
+	//recebe a mensagem do cliente
+	n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len); 
 	buffer[n] = '\0'; 
 	snprintf(log,256,"Cliente : %s",buffer);
 	puts(log); 
 
-	//envia a confirmacao
-	sendto(sockfd, (const char *)mensagem, strlen(mensagem), 
-		MSG_CONFIRM, (const struct sockaddr *) &cliaddr, 
-			len); 
+	//envia a confirmação
+	sendto(sockfd, (const char *)mensagem, strlen(mensagem), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
 	puts("Confirmada a recepção.\nMensagem: "); 
 	puts(buffer);
 
-	while(1) {
-
+	while(1){
 		if (buffer[0] == 'D' || buffer[0] == 'd') {
-			adicionar_dados(buffer, arquivo);
+			add_dados(buffer, arquivo);
 			//cria uma string a ser enviada pelo socket
 			snprintf(resposta,256,"Dados adicionados");
 		}
@@ -108,23 +103,18 @@ int main(int argc, char *argv[])
 		}
 
 		//envia a resposta
-		sendto(sockfd, (const char *)resposta, strlen(resposta), 
-				MSG_CONFIRM, (const struct sockaddr *) &cliaddr, 
-				len); 
+		sendto(sockfd, (const char *)resposta, strlen(resposta), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
 		puts("Resposta enviada, aguardando requisição.");
+		puts("");
 	
 		//recebe a mensagem so cliente
-		n = recvfrom(sockfd, (char *)buffer, MAXLINE, 
-				MSG_WAITALL, ( struct sockaddr *) &cliaddr, 
-				&len); 
+		n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len); 
 		buffer[n] = '\0'; 
 		snprintf(log,256,"Cliente : %s",buffer);
 		puts(log); 
 
 		//envia a confirmacao
-		sendto(sockfd, (const char *)mensagem, strlen(mensagem), 
-				MSG_CONFIRM, (const struct sockaddr *) &cliaddr, 
-				len); 
+		sendto(sockfd, (const char *)mensagem, strlen(mensagem), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
 		puts("Confirmada a recepção.\n"); 
 
 	}

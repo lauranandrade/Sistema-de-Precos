@@ -2,23 +2,22 @@
 #include <stdio.h>
 #include <math.h>
 
-int letra2num(char letra)
+int char2num(char letra)
 {
-	int num = 0;
 	if (letra < 58)
-		num = letra-48;
+		return letra-48;
 	else if (letra < 91)
-		num = letra-65;
+		return letra-65;
 	else
-		num = letra-97;
+		return letra-97;
 	return num;
 }
 
-int str2int(char *str, int t)
+int str2num(char *str, int t)
 {
 	int res = 0;
 	for (int i=0; i< t; ++i) {
-		res += letra2num(str[i]) * pow(10,t-i-1);
+		res += char2num(str[i]) * pow(10,t-i-1);
 	}
 	return res;
 }
@@ -43,12 +42,12 @@ int leInt(void)
 	while((c=getchar()) != '\n' && c != EOF) {
 		linha[i++] = c;
 	}
-	return str2int(linha,i);
+	return str2num(linha,i);
 }
 
-void adicionar_dados(char *mensagem, char *arquivo)
+void add_dados(char *mensagem, char *arquivo)
 {
-	//adiciona no arquivo a string do cliente
+	//escreve no arquivo a informação passada pelo cliente
 	FILE *arq = fopen(arquivo,"a");
 	fprintf(arq,"%s\n",mensagem);
 	fclose(arq);
@@ -61,20 +60,19 @@ int parse_string(char *linha, int tipo, int raio, int lat, int lon)
 	int resp=-1;
 	int preco;
 	int tp;
-
 	char *token;
-	int i=0;
+	int i = 0;
 
 	while((token = strsep(&linha," "))) {
 		switch(i) {
-			case 2: tp=str2int(token,strlen(token));
+			case 2: tp=str2num(token,strlen(token));
 					break;
-			case 3: preco=str2int(token,strlen(token));
+			case 3: preco=str2num(token,strlen(token));
 					break;
-			case 4: latitude=str2int(token,strlen(token));
+			case 4: latitude=str2num(token,strlen(token));
 					break;
-			case 5: token[strlen(token)-1] = '\0';//retira o\n do final
-					longitude=str2int(token,strlen(token));
+			case 5: token[strlen(token)-1] = '\0';
+					longitude = str2num(token,strlen(token));
 					break;
 			default: ;
 		}
@@ -84,7 +82,7 @@ int parse_string(char *linha, int tipo, int raio, int lat, int lon)
 	if (tp == tipo) {
 		double dist = sqrt( (lat-latitude)*(lat-latitude) + (lon-longitude)*(lon-longitude) );
 		if (dist <= raio) {
-			resp = preco;//strsep(linha,4);
+			resp = preco;
 		}
 	}
 	return resp;
@@ -95,23 +93,23 @@ int pesquisar_dados(char *mensagem, char *arquivo)
 	FILE *arq = fopen(arquivo,"r");
 	char *linha;
 	char *token;
-	int menor=-1;
+	int menor = -1;
 	int tipo;
 	int raio;
 	int lat;
 	int lon;
 	int aux;
+	int i = 0;
 
-	int i=0;
 	while((token = strsep(&mensagem," "))) {
 		switch(i) {
-			case 2: tipo=str2int(token,strlen(token));
+			case 2: tipo=str2num(token,strlen(token));
 					break;
-			case 3: raio=str2int(token,strlen(token));
+			case 3: raio=str2num(token,strlen(token));
 					break;
-			case 4: lat=str2int(token,strlen(token));
+			case 4: lat=str2num(token,strlen(token));
 					break;
-			case 5: lon=str2int(token,strlen(token));
+			case 5: lon=str2num(token,strlen(token));
 					break;
 			default: ;
 		}
@@ -125,7 +123,6 @@ int pesquisar_dados(char *mensagem, char *arquivo)
 		aux = parse_string(linha, tipo, raio, lat, lon);
 		if (aux != -1 && menor == -1 || aux < menor)
 			menor = aux;
-		
 	}
 	return menor;
 }
