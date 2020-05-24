@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
 	//envia a confirmação
 	sendto(sockfd, (const char *)mensagem, strlen(mensagem), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
-	puts("Confirmada a recepção.\nMensagem: "); 
+	puts("\nConfirmada a recepção.\n\nMensagem: "); 
 	puts(buffer);
 
 	while(1){
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 
 		//envia a resposta
 		sendto(sockfd, (const char *)resposta, strlen(resposta), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
-		puts("Resposta enviada, aguardando requisição.");
+		puts("\nResposta enviada, aguardando requisição.");
 		puts("");
 	
 		//recebe a mensagem so cliente
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
 
 		//envia a confirmacao
 		sendto(sockfd, (const char *)mensagem, strlen(mensagem), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
-		puts("Confirmada a recepção.\n"); 
+		puts("\nConfirmada a recepção.\n"); 
 
 	}
 	return 0; 

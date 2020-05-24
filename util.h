@@ -10,7 +10,6 @@ int char2num(char letra)
 		return letra-65;
 	else
 		return letra-97;
-	return num;
 }
 
 int str2num(char *str, int t)
@@ -22,24 +21,12 @@ int str2num(char *str, int t)
 	return res;
 }
 
-char leLetra(void)
-{
-	char linha[3];
-	int c;
-	int i=0;
-	while((c=getchar()) != '\n' && c != EOF && i<3) {
-		linha[i] = c;
-		++i;
-	}
-	return linha[0];
-}
-
 int leInt(void)
 {
 	char linha[10];
 	int c;
-	int i=0;
-	while((c=getchar()) != '\n' && c != EOF) {
+	int i = 0;
+	while((c = getchar()) != '\n' && c != EOF) {
 		linha[i++] = c;
 	}
 	return str2num(linha,i);
@@ -47,7 +34,6 @@ int leInt(void)
 
 void add_dados(char *mensagem, char *arquivo)
 {
-	//escreve no arquivo a informação passada pelo cliente
 	FILE *arq = fopen(arquivo,"a");
 	fprintf(arq,"%s\n",mensagem);
 	fclose(arq);
@@ -57,7 +43,7 @@ int parse_string(char *linha, int tipo, int raio, int lat, int lon)
 {
 	int longitude;
 	int latitude;
-	int resp=-1;
+	int resp = -1;
 	int preco;
 	int tp;
 	char *token;
@@ -65,11 +51,11 @@ int parse_string(char *linha, int tipo, int raio, int lat, int lon)
 
 	while((token = strsep(&linha," "))) {
 		switch(i) {
-			case 2: tp=str2num(token,strlen(token));
+			case 2: tp = str2num(token,strlen(token));
 					break;
-			case 3: preco=str2num(token,strlen(token));
+			case 3: preco = str2num(token,strlen(token));
 					break;
-			case 4: latitude=str2num(token,strlen(token));
+			case 4: latitude = str2num(token,strlen(token));
 					break;
 			case 5: token[strlen(token)-1] = '\0';
 					longitude = str2num(token,strlen(token));
@@ -103,13 +89,13 @@ int pesquisar_dados(char *mensagem, char *arquivo)
 
 	while((token = strsep(&mensagem," "))) {
 		switch(i) {
-			case 2: tipo=str2num(token,strlen(token));
+			case 2: tipo = str2num(token,strlen(token));
 					break;
-			case 3: raio=str2num(token,strlen(token));
+			case 3: raio = str2num(token,strlen(token));
 					break;
-			case 4: lat=str2num(token,strlen(token));
+			case 4: lat = str2num(token,strlen(token));
 					break;
-			case 5: lon=str2num(token,strlen(token));
+			case 5: lon = str2num(token,strlen(token));
 					break;
 			default: ;
 		}
@@ -125,4 +111,9 @@ int pesquisar_dados(char *mensagem, char *arquivo)
 			menor = aux;
 	}
 	return menor;
+}
+
+void limparBuffer(){
+	char c;
+	while((c = getchar()) != '\n' && c != EOF);
 }

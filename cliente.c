@@ -34,10 +34,10 @@ void init_socket()
 
 int main(int argc, char *argv[]) 
 { 
-	int DouP;
-	int tipo;
+	char opcao;
+	char tipo;
 	int preco_ou_raio;
-	int lat, lon;
+	int latitude, longitude;
 	int id = 0;
 	int c;
 	int n, len; 
@@ -65,35 +65,44 @@ int main(int argc, char *argv[])
 	}
 	init_socket();
 	
-	printf("\nVocê deseja inserir dados(D), pesquisar dados(P), ou encerrar(0)? ");
-	DouP = leLetra();
-	while (DouP != 68 && DouP != 80 && DouP !=100 && DouP != 112 && DouP !='0') {
-		printf("\nInválido. Digite dados(D), pesquisa(P) ou encerrar(0): ");
-		DouP = leLetra();
-	}
-	if (DouP == '0') {
+	do {
+		printf("\nDigite 'D' para inserir dados, 'P' para pesquisar dados ou '0' para encerrar: ");
+		//opcao = leLetra();
+		opcao = getchar();
+		limparBuffer();
+		if (opcao != 'D' && opcao != 'P' && opcao != 'd' && opcao != 'p' && opcao !='0'){
+			printf("\nEntrada inválida!");
+		}
+	} while (opcao != 'D' && opcao != 'P' && opcao != 'd' && opcao != 'p' && opcao !='0');
+	if (opcao == '0') {
 		close(sockfd); 
 		exit(0);
 	}
-	printf("\nTipo de combustível (0-diesel, 1-alcool, 2-gasolina): ");
-	tipo = leInt();
-	while(tipo != 0 && tipo != 1 && tipo != 2) {
-		printf("\nInválido. Tipo de combustível (0-diesel, 1-alcool, 2-gasolina): ");
-		tipo = leInt();
-	}
-	if(DouP == 'P' || DouP == 'p'){
-		printf("\nRaio de busca: ");
+
+	do {
+		printf("\nTipo de combustível (0-diesel, 1-alcool, 2-gasolina): ");
+		tipo = getchar();
+		limparBuffer();
+		if (tipo != '0' && tipo != '1' && tipo != '2'){
+			printf("\nEntrada inválida!");
+		}
+	} while(tipo != '0' && tipo != '1' && tipo != '2');
+	if(opcao == 'P' || opcao == 'p'){
+		printf("\nDigite o raio da busca: ");
 	}
 	else{
-		printf("\nPreço do combustível (x1000): ");
+		printf("\nDigite o preço do combustível (Ex: R$4,529 -> 4529): ");
 	}
 	preco_ou_raio = leInt();
-	printf("\nLatitude(0-90): ");
-	lat = leInt();
-	printf("\nLongitude(0-180): ");
-	lon = leInt();
+
+	printf("\nDigite a latitude(0-90): ");
+	latitude = leInt();
+
+	printf("\nDigite a longitude(0-180): ");
+	longitude = leInt();
+
 	//cria uma string a ser enviada pelo socket
-	snprintf(mensagem,256,"%c %d %d %d %d %d",DouP,id,tipo,preco_ou_raio,lat,lon);
+	snprintf(mensagem, 256, "%c %d %d %d %d %d", opcao, id, char2num(tipo), preco_ou_raio, latitude, longitude);
 	//cliente envia mensagem
 	sendto(sockfd, (const char *)mensagem, strlen(mensagem), MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
 	printf("\nEnviado: %s\n", mensagem); 
@@ -116,41 +125,62 @@ int main(int argc, char *argv[])
 		buffer[n] = '\0'; 
 		//printa a resposta do sistema
 		printf("\nServidor : %s\n",buffer);
+		
 		//cliente digita informacoes
-		printf("\nVocê deseja inserir dados(D), pesquisar dados(P), ou encerrar(0)? ");
-		DouP = leLetra();
-		while (DouP != 68 && DouP != 80 && DouP !=100 && DouP != 112 && DouP != '0') {
-			printf("\nInválido. Digite dados(D), pesquisa(P) ou encerrar(0): ");
-			DouP = leLetra();
-		}
-		if (DouP == '0') {
+		do {
+			printf("\nDigite 'D' para inserir dados, 'P' para pesquisar dados ou '0' para encerrar: ");
+			//opcao = leLetra();
+			opcao = getchar();
+			limparBuffer();
+			if (opcao != 'D' && opcao != 'P' && opcao != 'd' && opcao != 'p' && opcao !='0'){
+				printf("\nEntrada inválida!");
+			}
+		} while (opcao != 'D' && opcao != 'P' && opcao != 'd' && opcao != 'p' && opcao !='0');
+		if (opcao == '0') {
 			close(sockfd); 
 			exit(0);
 		}
-		printf("\nTipo de combustível (0-diesel, 1-alcool, 2-gasolina): ");
-		tipo = leInt();
-		while(tipo != 0 && tipo != 1 && tipo != 2) {
-			printf("\nInválido. Tipo de combustível (0-diesel, 1-alcool, 2-gasolina): ");
-			tipo = leInt();
+
+		do {
+			printf("\nTipo de combustível (0-diesel, 1-alcool, 2-gasolina): ");
+			tipo = getchar();
+			limparBuffer();
+			if (tipo != '0' && tipo != '1' && tipo != '2'){
+				printf("\nEntrada inválida!");
+			}
+		} while(tipo != '0' && tipo != '1' && tipo != '2');
+		if(opcao == 'P' || opcao == 'p'){
+			printf("\nDigite o raio da busca: ");
 		}
-		if(DouP == 'P' || DouP == 'p')
-			printf("\nRaio de busca: ");
-		else
-			printf("\nPreço do combustível (x1000): ");
+		else{
+			printf("\nDigite o preço do combustível (Ex: R$4,529 -> 4529): ");
+		}
 		preco_ou_raio = leInt();
-		printf("\nLatitude(0-90): ");
-		lat = leInt();
-		printf("\nLongitude(0-180): ");
-		lon = leInt();
+
+		printf("\nDigite a latitude(0-90): ");
+		latitude = leInt();
+
+		printf("\nDigite a longitude(0-180): ");
+		longitude = leInt();
 
 		//cria uma string a ser enviada pelo socket
-		snprintf(mensagem,256,"%c %d %d %d %d %d",DouP,id,tipo,preco_ou_raio,lat,lon);
+		snprintf(mensagem, 256, "%c %d %d %d %d %d", opcao, id, char2num(tipo), preco_ou_raio, latitude, longitude);
 
 		//cliente envia mensagem
+		sendto(sockfd, (const char *)mensagem, strlen(mensagem), MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
+		printf("\nEnviado: %s\n", mensagem); 
 		id++;
-
-		//se nao recebeu a mensagem, envia de novo
-
+		//recebe a confirmacao
+		n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &servaddr, &len); 
+		buffer[n] = '\0'; 
+		//se nao recebeu a confirmacao, envia de novo
+		if(n < 2) {
+			printf("\nResposta não recebida, reenviando"); 
+			//cliente envia mensagem
+			sendto(sockfd, (const char *)mensagem, strlen(mensagem), MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr)); 
+			printf("\nEnviado: %s\n", mensagem); 
+			id++;
+		}
 	}
 	close(sockfd); 
 	return 0; 
