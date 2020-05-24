@@ -103,9 +103,6 @@ int pesquisar_dados(char *mensagem, char *arquivo)
 	}
 
 	while(fgets(linha,256,arq)) {
-		//verifica se as informações dessa
-		//linha valem para a consulta, se valerem e o preço
-		//for menor que o menor, salva o novo menor
 		aux = parse_string(linha, tipo, raio, lat, lon);
 		if (aux != -1 && menor == -1 || aux < menor)
 			menor = aux;

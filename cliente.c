@@ -12,8 +12,7 @@
 #define MAXLINE 1024 
 
 char *ip = "127.0.0.1";
-int PORT=8000;
-
+int PORT = 8000;
 int sockfd; 
 char buffer[MAXLINE]; 
 char *mensagem = "Hello from client"; 
@@ -67,7 +66,6 @@ int main(int argc, char *argv[])
 	
 	do {
 		printf("\nDigite 'D' para inserir dados, 'P' para pesquisar dados ou '0' para encerrar: ");
-		//opcao = leLetra();
 		opcao = getchar();
 		limparBuffer();
 		if (opcao != 'D' && opcao != 'P' && opcao != 'd' && opcao != 'p' && opcao !='0'){
@@ -129,7 +127,6 @@ int main(int argc, char *argv[])
 		//cliente digita informacoes
 		do {
 			printf("\nDigite 'D' para inserir dados, 'P' para pesquisar dados ou '0' para encerrar: ");
-			//opcao = leLetra();
 			opcao = getchar();
 			limparBuffer();
 			if (opcao != 'D' && opcao != 'P' && opcao != 'd' && opcao != 'p' && opcao !='0'){
